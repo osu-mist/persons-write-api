@@ -27,3 +27,6 @@ build.properties
 *.cer
 *.keystore
 *.truststore
+
+# Contrib files
+src/main/groovy/edu/oregonstate/mist/contrib/

@@ -17,4 +17,9 @@ class PersonsWriteConfiguration extends Configuration {
     public DataSourceFactory getDataSourceFactory() {
         database
     }
+
+    @JsonProperty("database")
+    public void setDataSourceFactory(DataSourceFactory dataSourceFactory) {
+        this.database = dataSourceFactory
+    }
 }
