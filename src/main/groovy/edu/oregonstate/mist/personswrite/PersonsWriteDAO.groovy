@@ -40,5 +40,11 @@ public interface PersonsWriteDAO extends Closeable {
     @SqlCall(AbstractPersonsDAO.createJobFunction)
     @OutParameter(name = "return_value", sqlType = Types.VARCHAR)
     OutParameters createJob(@Bind('osuID') String osuID,
-                            @BindBean("job") JobObject job)
+                            @BindBean("job") JobObject job,
+                            @Bind("laborDistributionsCount") Integer laborDistributionsCount,
+                            @Bind("accountIndexCodes") String accountIndexCodes,
+                            @Bind("accountCodes") String accountCodes,
+                            @Bind("activityCodes") String activityCodes,
+                            @Bind("laborDistributionPercentages")
+                                    String laborDistributionPercentages)
 }

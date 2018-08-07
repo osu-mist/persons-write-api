@@ -49,15 +49,32 @@ class PersonsWriteResource extends Resource {
 
         JobObject job = JobObject.fromResultObject(resultObject)
 
-        String createJobResult = personsWriteDAO.createJob(osuID, job).getString("return_value")
+        String createJobResult = createJobInDb(osuID, JobObject.fromResultObject(resultObject))
 
         //TODO: Should we be checking other conditions besides an null/empty string?
-        // null string means success, I guess?
+        // null/empty string means success, I guess?
         if (!createJobResult) {
             accepted(new ResultObject(data: new ResourceObject(attributes: job))).build()
         } else {
             internalServerError("Error creating new job: $createJobResult").build()
         }
+    }
+
+    private String createJobInDb(String osuID, JobObject job) {
+        personsWriteDAO.createJob(
+                osuID,
+                job,
+                job.laborDistribution.size(),
+                joinListForDB(job.laborDistribution.collect { it.accountIndexCode }),
+                joinListForDB(job.laborDistribution.collect { it.accountCode }),
+                joinListForDB(job.laborDistribution.collect { it.activityCode }),
+                joinListForDB(job.laborDistribution.collect { it.distributionPercent.toString() })
+        ).getString("return_value")
+    }
+
+    private static String joinListForDB(List<String> values) {
+        println(values.join("|"))
+        values.join("|")
     }
 
     private List<Error> newJobErrors(ResultObject resultObject) {
